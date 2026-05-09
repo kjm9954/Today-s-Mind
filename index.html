@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🥔 Today's Mind</title>
+  <style>
+    @font-face {
+      font-family: "Galmuri9";
+      src: url("./Galmuri9.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --bg: #ffffff;
+      --ink: #202124;
+      --muted: #74777f;
+      --line: #eceef3;
+      --panel: #f7f8fb;
+      --paper: #fbfcff;
+      --cream: #fff8ee;
+      --active: #202124;
+      --shadow: 0 14px 30px rgba(28, 31, 38, 0.13);
+      --soft-shadow: 0 8px 20px rgba(28, 31, 38, 0.08);
+      --bottom-space: 132px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--bg);
+    }
+
+    body {
+      min-height: 100%;
+      margin: 0;
+      overflow-y: auto;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Galmuri9", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+      -webkit-font-smoothing: antialiased;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+    }
+
+    .app {
+      width: min(100%, 760px);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 20px 16px var(--bottom-space);
+      background: var(--bg);
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      min-width: 0;
+    }
+
+    .brand-title {
+      margin: 0;
+      color: var(--ink);
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.18;
+    }
+
+    .brand-subtitle {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.45;
+    }
+
+    .date-control {
+      flex: 0 0 auto;
+      display: flex;
+      position: relative;
+      flex-direction: column;
+      gap: 5px;
+      min-width: 142px;
+    }
+
+    .date-control label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .date-input {
+      width: 100%;
+      min-height: 40px;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 36px 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      outline: none;
+      background: #ffffff;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 400;
+      text-align: left;
+      box-shadow: 0 2px 10px rgba(28, 31, 38, 0.04);
+    }
+
+    .date-input:focus {
+      border-color: #202124;
+      box-shadow: 0 0 0 3px rgba(32, 33, 36, 0.08);
+    }
+
+    .date-input::after {
+      content: "⌄";
+      position: absolute;
+      right: 12px;
+      color: var(--muted);
+    }
+
+    .date-picker {
+      position: absolute;
+      top: calc(100% + 7px);
+      left: 0;
+      z-index: 20;
+      width: 260px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 16px 34px rgba(28, 31, 38, 0.12);
+    }
+
+    .date-picker[hidden] {
+      display: none;
+    }
+
+    .date-picker-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .date-picker-title {
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.35;
+    }
+
+    .date-picker-nav {
+      display: flex;
+      gap: 4px;
+    }
+
+    .date-picker-button {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: #f5f6f9;
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 400;
+    }
+
+    .date-picker-weekdays,
+    .date-picker-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+    }
+
+    .date-picker-weekdays {
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .date-picker-day {
+      min-width: 0;
+      min-height: 30px;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .date-picker-day.is-muted {
+      color: #b3b6bf;
+    }
+
+    .date-picker-day.is-selected {
+      background: #202124;
+      color: #ffffff;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      padding: 5px;
+      margin-bottom: 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #f5f6f9;
+    }
+
+    .tab-button {
+      min-height: 42px;
+      border-radius: 9px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 400;
+      transition: background 160ms ease, color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .tab-button.is-active {
+      background: #ffffff;
+      color: var(--active);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.is-active {
+      display: block;
+    }
+
+    .last-record {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+      box-shadow: 0 16px 34px rgba(28, 31, 38, 0.09);
+    }
+
+    .last-record::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--accent, #ffb347), var(--accent-soft, #eceef3));
+    }
+
+    .last-record.is-empty {
+      border-style: dashed;
+      background: #fbfcff;
+      box-shadow: none;
+    }
+
+    .last-record.is-empty::before {
+      display: none;
+    }
+
+    .today-editor {
+      display: none;
+    }
+
+    #todayPanel.is-editing .today-summary {
+      display: none;
+    }
+
+    #todayPanel.is-editing .today-editor {
+      display: block;
+      animation: riseIn 220ms ease both;
+    }
+
+    .editor-date {
+      width: min(100%, 230px);
+      min-width: 0;
+      margin-bottom: 18px;
+    }
+
+    .record-kicker {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      margin: 0 0 10px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: var(--accent-soft, #f1f3f7);
+      color: #626671;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.35;
+    }
+
+    .record-date {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      margin: 0 0 4px;
+      padding: 7px 11px;
+      border: 1px solid #ece6dc;
+      border-radius: 999px;
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.35;
+    }
+
+    .record-emotions {
+      margin: 0;
+      color: #4d515b;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+      word-break: keep-all;
+    }
+
+    .selected-card-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 12px;
+      margin-top: 14px;
+    }
+
+    .summary-card {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px;
+      padding: 6px 14px;
+      border: 1.5px solid transparent;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.2;
+      text-align: center;
+      word-break: keep-all;
+      box-shadow: none;
+    }
+
+    .empty-state {
+      padding: 24px 8px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.55;
+      text-align: center;
+    }
+
+    .category {
+      margin: 0 0 24px;
+    }
+
+    .category-head {
+      display: flex;
+      align-items: center;
+      margin-bottom: 11px;
+    }
+
+    .category-title {
+      margin: 0;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.35;
+    }
+
+    .card-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 10px;
+    }
+
+    .emotion-card {
+      position: relative;
+      min-height: 30px;
+      padding: 6px 14px;
+      border: 2px solid transparent;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.2;
+      text-align: center;
+      word-break: keep-all;
+      box-shadow: none;
+      transform: none;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .emotion-card:active {
+      filter: brightness(0.88);
+    }
+
+    .emotion-card.is-selected {
+      transform: scale(1.06);
+    }
+
+    .emotion-card.is-selected[style*="#b36200"] {
+      border-color: #b36200;
+      box-shadow: 0 2px 8px rgba(179, 98, 0, 0.22);
+    }
+
+    .emotion-card.is-selected[style*="#1a4a8a"] {
+      border-color: #1a4a8a;
+      box-shadow: 0 2px 8px rgba(26, 74, 138, 0.22);
+    }
+
+    .emotion-card.is-selected[style*="#8b1a1a"] {
+      border-color: #8b1a1a;
+      box-shadow: 0 2px 8px rgba(139, 26, 26, 0.22);
+    }
+
+    .emotion-card.is-selected[style*="#4a2a8a"] {
+      border-color: #4a2a8a;
+      box-shadow: 0 2px 8px rgba(74, 42, 138, 0.22);
+    }
+
+    .emotion-card.is-selected[style*="#555555"] {
+      border-color: #555555;
+      box-shadow: 0 2px 8px rgba(85, 85, 85, 0.22);
+    }
+
+    .emotion-card:focus-visible,
+    .save-button:focus-visible,
+    .tab-button:focus-visible {
+      outline: 3px solid rgba(32, 33, 36, 0.22);
+      outline-offset: 3px;
+    }
+
+    .history-list {
+      display: grid;
+      position: relative;
+      gap: 12px;
+      padding-left: 18px;
+    }
+
+    .history-list.is-plain {
+      padding-left: 0;
+    }
+
+    .history-list::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 5px;
+      width: 2px;
+      border-radius: 999px;
+      background: #eceef3;
+    }
+
+    .history-list.is-plain::before {
+      display: none;
+    }
+
+    .history-item {
+      position: relative;
+      padding: 15px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 8px 18px rgba(28, 31, 38, 0.06);
+    }
+
+    .history-item::before {
+      content: "";
+      position: absolute;
+      top: 22px;
+      left: -18px;
+      width: 11px;
+      height: 11px;
+      border: 3px solid #ffffff;
+      border-radius: 999px;
+      background: var(--accent, #202124);
+      box-shadow: 0 0 0 1px rgba(32, 33, 36, 0.12);
+    }
+
+    .history-item:first-child {
+      border-color: rgba(32, 33, 36, 0.14);
+      box-shadow: 0 14px 26px rgba(28, 31, 38, 0.1);
+    }
+
+    .history-chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px 10px;
+      margin-top: 8px;
+    }
+
+    .history-empty,
+    .history-loading,
+    .history-error {
+      padding: 28px 14px;
+      border: 1px dashed #d9dce4;
+      border-radius: 12px;
+      background: #fbfcff;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.55;
+      text-align: center;
+    }
+
+    .history-error {
+      border-color: rgba(224, 92, 92, 0.35);
+      background: #fff8f8;
+      color: #c54444;
+    }
+
+    .save-bar {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 30;
+      padding: 12px 16px max(12px, env(safe-area-inset-bottom));
+      border-top: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(14px);
+    }
+
+    .save-bar.is-hidden {
+      display: none;
+    }
+
+    .save-bar-inner {
+      display: grid;
+      gap: 8px;
+      width: min(100%, 760px);
+      margin: 0 auto;
+    }
+
+    .save-selection {
+      min-height: 20px;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.45;
+      text-align: center;
+      word-break: keep-all;
+    }
+
+    .save-selection.is-empty {
+      color: #9a9da5;
+    }
+
+    .save-button {
+      width: 100%;
+      min-height: 50px;
+      border-radius: 14px;
+      background: #202124;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 400;
+      box-shadow: var(--shadow);
+      transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+    }
+
+    .save-button:not(:disabled):active {
+      transform: translateY(1px);
+      box-shadow: 0 9px 20px rgba(28, 31, 38, 0.16);
+    }
+
+    .save-button:disabled {
+      background: #d5d8df;
+      color: #ffffff;
+      box-shadow: none;
+      opacity: 0.78;
+    }
+
+    .toast {
+      position: fixed;
+      right: 16px;
+      bottom: 86px;
+      left: 16px;
+      z-index: 40;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .toast.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast-content {
+      max-width: 420px;
+      padding: 12px 15px;
+      border-radius: 999px;
+      background: #202124;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.35;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    @keyframes riseIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (min-width: 560px) {
+      .app {
+        padding: 24px 24px var(--bottom-space);
+      }
+    }
+
+    @media (max-width: 420px) {
+      .top {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .date-control {
+        width: 100%;
+      }
+
+      .date-input {
+        min-height: 44px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="top">
+      <div class="brand">
+        <h1 class="brand-title">🥔 Today's Mind</h1>
+        <p class="brand-subtitle">마지막으로 남긴 감정을 먼저 확인해요.</p>
+      </div>
+    </header>
+
+    <nav class="tabs" aria-label="감정 카드 탭">
+      <button class="tab-button is-active" type="button" data-tab="today" aria-selected="true">오늘의 감정</button>
+      <button class="tab-button" type="button" data-tab="history" aria-selected="false">히스토리</button>
+    </nav>
+
+    <section class="panel is-active" id="todayPanel" aria-label="오늘의 감정">
+      <section class="today-summary" id="todaySummary">
+        <article class="last-record" id="lastRecord" aria-live="polite"></article>
+      </section>
+
+      <section class="today-editor" id="todayEditor" aria-label="감정 기록하기">
+        <div class="date-control editor-date">
+          <label for="recordDate">기록 날짜</label>
+          <button class="date-input" id="dateTrigger" type="button" aria-haspopup="dialog" aria-expanded="false">2026-05-10</button>
+          <input id="recordDate" type="hidden" value="">
+          <div class="date-picker" id="datePicker" hidden>
+            <div class="date-picker-head">
+              <div class="date-picker-title" id="datePickerTitle"></div>
+              <div class="date-picker-nav">
+                <button class="date-picker-button" id="prevMonthButton" type="button" aria-label="이전 달">‹</button>
+                <button class="date-picker-button" id="nextMonthButton" type="button" aria-label="다음 달">›</button>
+              </div>
+            </div>
+            <div class="date-picker-weekdays" aria-hidden="true">
+              <span>일</span>
+              <span>월</span>
+              <span>화</span>
+              <span>수</span>
+              <span>목</span>
+              <span>금</span>
+              <span>토</span>
+            </div>
+            <div class="date-picker-days" id="datePickerDays"></div>
+          </div>
+        </div>
+        <div id="cardRoot"></div>
+      </section>
+    </section>
+
+    <section class="panel" id="historyPanel" aria-label="히스토리">
+      <div class="history-list" id="historyList"></div>
+    </section>
+  </main>
+
+  <div class="save-bar" id="saveBar">
+    <div class="save-bar-inner">
+      <div class="save-selection is-empty" id="saveSelection" aria-live="polite">감정을 선택해주세요</div>
+      <button class="save-button" id="saveButton" type="button">감정 기록하기</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <div class="toast-content" id="toastContent"></div>
+  </div>
+
+  <script>
+    const WORKER_URL = ""; // 나중에 Cloudflare Worker URL 입력
+    const USE_MOCK = WORKER_URL === "";
+
+    const CARDS = [
+      {
+        category: "좋은 감정",
+        color: "#FFB347",
+        textColor: "#ffffff",
+        emotions: ["기쁘다", "행복하다", "신나다", "설레다", "뿌듯하다", "감사하다", "편안하다", "자신있다", "만족하다", "재미있다"]
+      },
+      {
+        category: "슬픈 감정",
+        color: "#5B9BD5",
+        textColor: "#ffffff",
+        emotions: ["슬프다", "속상하다", "서운하다", "외롭다", "그립다", "허전하다", "우울하다", "실망하다", "안타깝다", "서럽다"]
+      },
+      {
+        category: "화나는 감정",
+        color: "#E05C5C",
+        textColor: "#ffffff",
+        emotions: ["화나다", "짜증나다", "억울하다", "원망스럽다", "미워하다", "질투나다", "답답하다", "불쾌하다"]
+      },
+      {
+        category: "불안한 감정",
+        color: "#9B72CF",
+        textColor: "#ffffff",
+        emotions: ["불안하다", "걱정하다", "긴장하다", "무섭다", "두렵다", "초조하다", "혼란스럽다", "부담스럽다"]
+      },
+      {
+        category: "지친 감정",
+        color: "#9E9E9E",
+        textColor: "#ffffff",
+        emotions: ["피곤하다", "지치다", "귀찮다", "무기력하다"]
+      }
+    ];
+
+    const CATEGORY_VIEW = {
+      "좋은 감정": {
+        emoji: "🌟",
+        background: "#fff3e0",
+        color: "#b36200"
+      },
+      "슬픈 감정": {
+        emoji: "🌧️",
+        background: "#e8f0fb",
+        color: "#1a4a8a"
+      },
+      "화나는 감정": {
+        emoji: "🔥",
+        background: "#fdecea",
+        color: "#8b1a1a"
+      },
+      "불안한 감정": {
+        emoji: "☁️",
+        background: "#f0eafb",
+        color: "#4a2a8a"
+      },
+      "지친 감정": {
+        emoji: "🌫️",
+        background: "#f1f1f1",
+        color: "#555555"
+      }
+    };
+
+    const STORAGE_KEY = "todaysMind.records";
+    const emotionLookup = new Map();
+    const selectedEmotions = new Set();
+
+    CARDS.forEach((group) => {
+      const view = CATEGORY_VIEW[group.category] || {
+        emoji: "",
+        background: group.color,
+        color: group.textColor
+      };
+
+      group.emotions.forEach((emotion) => {
+        emotionLookup.set(emotion, {
+          accent: group.color,
+          background: view.background,
+          color: view.color,
+          emoji: view.emoji,
+          category: group.category
+        });
+      });
+    });
+
+    const cardRoot = document.getElementById("cardRoot");
+    const saveButton = document.getElementById("saveButton");
+    const saveBar = document.getElementById("saveBar");
+    const saveSelection = document.getElementById("saveSelection");
+    const historyList = document.getElementById("historyList");
+    const lastRecord = document.getElementById("lastRecord");
+    const recordDate = document.getElementById("recordDate");
+    const dateTrigger = document.getElementById("dateTrigger");
+    const datePicker = document.getElementById("datePicker");
+    const datePickerTitle = document.getElementById("datePickerTitle");
+    const datePickerDays = document.getElementById("datePickerDays");
+    const prevMonthButton = document.getElementById("prevMonthButton");
+    const nextMonthButton = document.getElementById("nextMonthButton");
+    const toast = document.getElementById("toast");
+    const toastContent = document.getElementById("toastContent");
+    const tabButtons = Array.from(document.querySelectorAll(".tab-button"));
+    const panels = {
+      today: document.getElementById("todayPanel"),
+      history: document.getElementById("historyPanel")
+    };
+
+    let toastTimer = null;
+    let isEditing = false;
+    let isSaving = false;
+    let knownRecords = [];
+    let lastSavedRecord = null;
+    let calendarViewDate = null;
+
+    function getTodayString() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return "";
+      const parts = dateString.split("-").map(Number);
+      if (parts.length !== 3 || parts.some(Number.isNaN)) return dateString;
+
+      const [year, month, day] = parts;
+      return `${year}년 ${month}월 ${day}일`;
+    }
+
+    function parseDateString(dateString) {
+      const parts = String(dateString || "").split("-").map(Number);
+      if (parts.length !== 3 || parts.some(Number.isNaN)) return null;
+
+      const [year, month, day] = parts;
+      const parsed = new Date(year, month - 1, day);
+      if (
+        parsed.getFullYear() !== year ||
+        parsed.getMonth() !== month - 1 ||
+        parsed.getDate() !== day
+      ) {
+        return null;
+      }
+
+      return parsed;
+    }
+
+    function toDateString(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function setRecordDate(dateString, shouldNotify = false) {
+      const parsed = parseDateString(dateString) || parseDateString(getTodayString());
+      const normalizedDate = toDateString(parsed);
+
+      recordDate.value = normalizedDate;
+      dateTrigger.textContent = normalizedDate;
+      calendarViewDate = new Date(parsed.getFullYear(), parsed.getMonth(), 1);
+      renderDatePicker();
+
+      if (shouldNotify) {
+        recordDate.dispatchEvent(new Event("change"));
+      }
+    }
+
+    function openDatePicker() {
+      datePicker.hidden = false;
+      dateTrigger.setAttribute("aria-expanded", "true");
+      renderDatePicker();
+    }
+
+    function closeDatePicker() {
+      datePicker.hidden = true;
+      dateTrigger.setAttribute("aria-expanded", "false");
+    }
+
+    function renderDatePicker() {
+      if (!calendarViewDate) return;
+
+      const year = calendarViewDate.getFullYear();
+      const month = calendarViewDate.getMonth();
+      const selectedDate = recordDate.value;
+      const firstDay = new Date(year, month, 1);
+      const startOffset = firstDay.getDay();
+
+      datePickerTitle.textContent = `${year}년 ${month + 1}월`;
+      datePickerDays.innerHTML = "";
+
+      for (let index = 0; index < 42; index += 1) {
+        const dayDate = new Date(year, month, 1 - startOffset + index);
+        const dayButton = document.createElement("button");
+        const dayString = toDateString(dayDate);
+
+        dayButton.className = "date-picker-day";
+        dayButton.type = "button";
+        dayButton.textContent = String(dayDate.getDate());
+
+        if (dayDate.getMonth() !== month) {
+          dayButton.classList.add("is-muted");
+        }
+
+        if (dayString === selectedDate) {
+          dayButton.classList.add("is-selected");
+        }
+
+        dayButton.addEventListener("click", () => {
+          setRecordDate(dayString, true);
+          closeDatePicker();
+        });
+
+        datePickerDays.appendChild(dayButton);
+      }
+    }
+
+    function normalizeRecords(records) {
+      if (!Array.isArray(records)) return [];
+
+      return records
+        .filter((record) => record && typeof record.date === "string" && Array.isArray(record.emotions))
+        .map((record) => ({
+          date: record.date,
+          emotions: record.emotions.filter((emotion) => typeof emotion === "string")
+        }))
+        .filter((record) => record.date && record.emotions.length > 0);
+    }
+
+    function getEndpoint(path) {
+      return `${WORKER_URL.replace(/\/$/, "")}${path}`;
+    }
+
+    function loadMockRecords() {
+      try {
+        return normalizeRecords(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+      } catch (error) {
+        console.warn("localStorage records parse failed", error);
+        return [];
+      }
+    }
+
+    function saveMockRecords(records) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizeRecords(records)));
+    }
+
+    async function saveRecord(record) {
+      if (USE_MOCK) {
+        const records = loadMockRecords().filter((item) => item.date !== record.date);
+        records.push(record);
+        saveMockRecords(records);
+        return record;
+      }
+
+      const response = await fetch(getEndpoint("/record"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(record)
+      });
+
+      if (!response.ok) {
+        throw new Error("저장 요청에 실패했어요.");
+      }
+
+      return record;
+    }
+
+    async function fetchHistory() {
+      if (USE_MOCK) {
+        return loadMockRecords();
+      }
+
+      const response = await fetch(getEndpoint("/history"));
+      if (!response.ok) {
+        throw new Error("히스토리를 불러오지 못했어요.");
+      }
+
+      const data = await response.json();
+      return normalizeRecords(Array.isArray(data) ? data : data.records);
+    }
+
+    function getLastRecord(records) {
+      if (!records.length) return null;
+      return records[records.length - 1];
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, (character) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#39;"
+      }[character]));
+    }
+
+    function getEmotionStyle(emotion) {
+      const meta = emotionLookup.get(emotion) || {
+        background: "#f1f1f1",
+        color: "#555555"
+      };
+
+      return `background: ${meta.background}; color: ${meta.color};`;
+    }
+
+    function getRecordAccent(record) {
+      const firstEmotion = record.emotions[0];
+      const meta = emotionLookup.get(firstEmotion);
+      return meta ? meta.accent : "#202124";
+    }
+
+    function getCategoryLabel(category) {
+      const view = CATEGORY_VIEW[category];
+      return view ? `${view.emoji} ${category}` : category;
+    }
+
+    function getEmotionChipLabel(emotion, withEmoji = false) {
+      const meta = emotionLookup.get(emotion);
+      return withEmoji && meta && meta.emoji ? `${meta.emoji} ${emotion}` : emotion;
+    }
+
+    function rememberRecords(records) {
+      knownRecords = normalizeRecords(records);
+      lastSavedRecord = getLastRecord(knownRecords);
+    }
+
+    function rememberRecord(record) {
+      knownRecords = knownRecords.filter((item) => item.date !== record.date);
+      knownRecords.push(record);
+      lastSavedRecord = record;
+    }
+
+    function renderLastRecord(record) {
+      if (!record) {
+        lastRecord.classList.add("is-empty");
+        lastRecord.innerHTML = '<div class="empty-state">아직 기록된 감정이 없어요.</div>';
+        return;
+      }
+
+      lastRecord.classList.remove("is-empty");
+      const emotionCards = record.emotions.map((emotion, index) => {
+        return `
+          <div class="summary-card" style="${getEmotionStyle(emotion)}">${escapeHtml(getEmotionChipLabel(emotion))}</div>
+        `;
+      }).join("");
+
+      lastRecord.style.setProperty("--accent", getRecordAccent(record));
+      lastRecord.style.setProperty("--accent-soft", `${getRecordAccent(record)}1a`);
+
+      lastRecord.innerHTML = `
+        <p class="record-kicker">마지막 기록</p>
+        <p class="record-date">${escapeHtml(formatDate(record.date))}</p>
+        <div class="selected-card-grid">${emotionCards}</div>
+      `;
+    }
+
+    function renderCards() {
+      const fragment = document.createDocumentFragment();
+
+      CARDS.forEach((group) => {
+        const section = document.createElement("section");
+        section.className = "category";
+
+        const head = document.createElement("div");
+        head.className = "category-head";
+
+        const title = document.createElement("h2");
+        title.className = "category-title";
+        title.textContent = getCategoryLabel(group.category);
+
+        const grid = document.createElement("div");
+        grid.className = "card-grid";
+
+        group.emotions.forEach((emotion) => {
+          const card = document.createElement("button");
+          card.className = "emotion-card";
+          card.type = "button";
+          card.textContent = emotion;
+          card.dataset.emotion = emotion;
+          card.setAttribute("style", getEmotionStyle(emotion));
+          card.setAttribute("aria-pressed", "false");
+
+          card.addEventListener("click", () => {
+            toggleEmotion(card, emotion);
+          });
+
+          grid.appendChild(card);
+        });
+
+        head.append(title);
+        section.append(head, grid);
+        fragment.appendChild(section);
+      });
+
+      cardRoot.appendChild(fragment);
+    }
+
+    function toggleEmotion(card, emotion) {
+      if (selectedEmotions.has(emotion)) {
+        selectedEmotions.delete(emotion);
+        card.classList.remove("is-selected");
+        card.setAttribute("aria-pressed", "false");
+      } else {
+        selectedEmotions.add(emotion);
+        card.classList.add("is-selected");
+        card.setAttribute("aria-pressed", "true");
+      }
+
+      updateSaveButton();
+    }
+
+    function updateSaveButton() {
+      updateSaveSelection();
+
+      if (!isEditing) {
+        saveButton.disabled = false;
+        saveButton.textContent = "감정 기록하기";
+        return;
+      }
+
+      saveButton.disabled = isSaving || selectedEmotions.size === 0;
+      saveButton.textContent = isSaving ? "저장하는 중..." : "오늘의 감정 저장하기";
+    }
+
+    function updateSaveSelection() {
+      const emotions = isEditing
+        ? Array.from(selectedEmotions)
+        : (lastSavedRecord ? lastSavedRecord.emotions : []);
+
+      if (!emotions.length) {
+        saveSelection.textContent = "감정을 선택해주세요";
+        saveSelection.classList.add("is-empty");
+        return;
+      }
+
+      saveSelection.textContent = `✅ ${emotions.join(" · ")}`;
+      saveSelection.classList.remove("is-empty");
+    }
+
+    function applySelection(emotions) {
+      selectedEmotions.clear();
+      emotions.forEach((emotion) => selectedEmotions.add(emotion));
+
+      document.querySelectorAll(".emotion-card").forEach((card) => {
+        const isSelected = selectedEmotions.has(card.dataset.emotion);
+        card.classList.toggle("is-selected", isSelected);
+        card.setAttribute("aria-pressed", String(isSelected));
+      });
+
+      updateSaveButton();
+    }
+
+    function clearSelection() {
+      applySelection([]);
+    }
+
+    function findRecordForDate(date) {
+      return knownRecords.find((record) => record.date === date) || null;
+    }
+
+    function enterEditor(record = lastSavedRecord) {
+      isEditing = true;
+      panels.today.classList.add("is-editing");
+      setRecordDate(record ? record.date : getTodayString());
+      applySelection(record ? record.emotions : []);
+      updateSaveButton();
+    }
+
+    function exitEditor() {
+      isEditing = false;
+      panels.today.classList.remove("is-editing");
+      clearSelection();
+      updateSaveButton();
+    }
+
+    function showToast(message) {
+      toastContent.textContent = message;
+      toast.classList.add("is-visible");
+
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => {
+        toast.classList.remove("is-visible");
+      }, 2200);
+    }
+
+    function renderHistory(records) {
+      const sortedRecords = [...records].sort((a, b) => b.date.localeCompare(a.date));
+
+      if (!sortedRecords.length) {
+        historyList.classList.add("is-plain");
+        historyList.innerHTML = '<div class="history-empty">아직 기록된 감정이 없어요.</div>';
+        return;
+      }
+
+      historyList.classList.remove("is-plain");
+      historyList.innerHTML = sortedRecords.map((record) => {
+        const chips = record.emotions.map((emotion) => `
+          <span class="summary-card" style="${getEmotionStyle(emotion)}">${escapeHtml(getEmotionChipLabel(emotion, true))}</span>
+        `).join("");
+
+        return `
+          <article class="history-item" style="--accent: ${getRecordAccent(record)};">
+            <p class="record-date">${escapeHtml(formatDate(record.date))}</p>
+            <div class="history-chip-list">${chips}</div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    async function refreshLastRecord() {
+      try {
+        const records = await fetchHistory();
+        rememberRecords(records);
+        renderLastRecord(lastSavedRecord);
+        updateSaveSelection();
+      } catch (error) {
+        console.warn("last record refresh failed", error);
+      }
+    }
+
+    async function loadHistory() {
+      historyList.classList.add("is-plain");
+      historyList.innerHTML = '<div class="history-loading">히스토리를 불러오는 중이에요.</div>';
+
+      try {
+        const records = await fetchHistory();
+        rememberRecords(records);
+        renderHistory(records);
+        renderLastRecord(lastSavedRecord);
+        updateSaveSelection();
+      } catch (error) {
+        console.error(error);
+        historyList.classList.add("is-plain");
+        historyList.innerHTML = '<div class="history-error">히스토리를 불러오지 못했어요.</div>';
+      }
+    }
+
+    function switchTab(tabName) {
+      tabButtons.forEach((button) => {
+        const isActive = button.dataset.tab === tabName;
+        button.classList.toggle("is-active", isActive);
+        button.setAttribute("aria-selected", String(isActive));
+      });
+
+      Object.entries(panels).forEach(([name, panel]) => {
+        panel.classList.toggle("is-active", name === tabName);
+      });
+
+      saveBar.classList.toggle("is-hidden", tabName !== "today");
+      updateSaveButton();
+
+      if (tabName === "history") {
+        loadHistory();
+      }
+    }
+
+    function handlePrimaryAction() {
+      if (!isEditing) {
+        enterEditor(lastSavedRecord);
+        return;
+      }
+
+      handleSave();
+    }
+
+    async function handleSave() {
+      const date = recordDate.value || getTodayString();
+      const emotions = Array.from(selectedEmotions);
+
+      if (!emotions.length) return;
+
+      isSaving = true;
+      updateSaveButton();
+
+      try {
+        const record = await saveRecord({ date, emotions });
+        rememberRecord(record);
+        renderLastRecord(record);
+        showToast("오늘의 감정이 기록됐어요 🥔");
+        exitEditor();
+
+        if (panels.history.classList.contains("is-active")) {
+          await loadHistory();
+        }
+      } catch (error) {
+        console.error(error);
+        showToast("저장하지 못했어요. 잠시 후 다시 시도해 주세요.");
+      } finally {
+        isSaving = false;
+        updateSaveButton();
+      }
+    }
+
+    function bindEvents() {
+      tabButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          switchTab(button.dataset.tab);
+        });
+      });
+
+      saveButton.addEventListener("click", handlePrimaryAction);
+      dateTrigger.addEventListener("click", () => {
+        if (datePicker.hidden) {
+          openDatePicker();
+        } else {
+          closeDatePicker();
+        }
+      });
+      prevMonthButton.addEventListener("click", () => {
+        calendarViewDate = new Date(calendarViewDate.getFullYear(), calendarViewDate.getMonth() - 1, 1);
+        renderDatePicker();
+      });
+      nextMonthButton.addEventListener("click", () => {
+        calendarViewDate = new Date(calendarViewDate.getFullYear(), calendarViewDate.getMonth() + 1, 1);
+        renderDatePicker();
+      });
+      document.addEventListener("click", (event) => {
+        if (!event.target.closest(".date-control")) {
+          closeDatePicker();
+        }
+      });
+      recordDate.addEventListener("change", () => {
+        const matchedRecord = findRecordForDate(recordDate.value);
+        if (matchedRecord) {
+          applySelection(matchedRecord.emotions);
+        }
+      });
+    }
+
+    function init() {
+      setRecordDate(getTodayString());
+      renderLastRecord(null);
+      renderCards();
+      bindEvents();
+      refreshLastRecord();
+      updateSaveButton();
+    }
+
+    init();
+  </script>
+</body>
+</html>
