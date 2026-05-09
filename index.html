@@ -1597,10 +1597,6 @@
       const date = button.dataset.date;
       if (!date) return;
 
-      if (!window.confirm(`${formatDate(date)} 기록을 삭제할까요?`)) {
-        return;
-      }
-
       button.disabled = true;
       button.textContent = "삭제 중";
 
