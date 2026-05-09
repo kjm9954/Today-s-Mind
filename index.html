@@ -27,7 +27,7 @@
       --accent: #e87900;
       --accent-soft: #fff0d8;
       --side-panel-width: 236px;
-      --bottom-space: 132px;
+      --bottom-space: 96px;
     }
 
     * {
@@ -78,8 +78,8 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 14px;
-      padding: 18px 20px;
+      margin-bottom: 10px;
+      padding: 14px 18px;
       border: 1px solid var(--line);
       border-radius: 18px;
       background: var(--paper);
@@ -124,11 +124,11 @@
 
     .date-input {
       width: 100%;
-      min-height: 40px;
+      min-height: 38px;
       position: relative;
       display: inline-flex;
       align-items: center;
-      padding: 8px 36px 8px 10px;
+      padding: 7px 36px 7px 10px;
       border: 1px solid var(--line);
       border-radius: 999px;
       outline: none;
@@ -236,15 +236,15 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 6px;
-      padding: 5px;
-      margin-bottom: 14px;
+      padding: 4px;
+      margin-bottom: 10px;
       border: 1px solid var(--line);
       border-radius: 16px;
       background: #fff2df;
     }
 
     .tab-button {
-      min-height: 42px;
+      min-height: 38px;
       border-radius: 12px;
       background: transparent;
       color: var(--muted);
@@ -301,7 +301,7 @@
     .today-editor {
       display: none;
       grid-template-columns: 64px minmax(0, 1fr);
-      min-height: 340px;
+      min-height: 310px;
       max-width: 920px;
       overflow: visible;
       border: 1px solid var(--line);
@@ -387,8 +387,8 @@
       display: flex;
       flex-direction: column;
       min-width: 0;
-      min-height: 340px;
-      padding: 18px 18px 0 20px;
+      min-height: 310px;
+      padding: 14px 16px 0 18px;
     }
 
     .chip-pane-top {
@@ -396,7 +396,7 @@
       align-items: flex-start;
       justify-content: space-between;
       gap: 16px;
-      margin-bottom: 18px;
+      margin-bottom: 12px;
     }
 
     .chip-category-title {
@@ -501,7 +501,7 @@
       flex-wrap: wrap;
       gap: 12px 10px;
       align-content: flex-start;
-      min-height: 150px;
+      min-height: 124px;
       padding-right: 2px;
     }
 
@@ -652,7 +652,7 @@
       bottom: 0;
       z-index: 10;
       margin-top: auto;
-      padding: 14px 0 16px;
+      padding: 10px 0 12px;
       background: linear-gradient(180deg, rgba(255, 254, 250, 0), var(--paper) 22%);
     }
 
@@ -719,7 +719,7 @@
       .chip-pane {
         display: grid;
         grid-template-columns: minmax(0, 1fr) var(--side-panel-width);
-        grid-template-rows: auto minmax(190px, 1fr);
+        grid-template-rows: auto minmax(160px, 1fr);
         column-gap: 18px;
         row-gap: 0;
       }
@@ -731,32 +731,32 @@
       .card-grid {
         grid-column: 1;
         grid-row: 2;
-        min-height: 220px;
-        padding: 2px 0 22px;
+        min-height: 174px;
+        padding: 2px 0 14px;
       }
 
       .save-bar {
         position: sticky;
-        top: 16px;
+        top: 12px;
         bottom: auto;
         grid-column: 2;
         grid-row: 2;
         align-self: start;
         margin-top: 0;
-        padding: 0 0 18px;
+        padding: 0 0 14px;
         background: transparent;
       }
 
       .save-bar-inner {
         align-items: stretch;
         flex-direction: column;
-        min-height: 188px;
-        padding: 14px;
+        min-height: 154px;
+        padding: 12px;
       }
 
       .save-selection {
-        min-height: 84px;
-        padding-bottom: 10px;
+        min-height: 58px;
+        padding-bottom: 8px;
         border-bottom: 1px dashed var(--line);
       }
 
@@ -828,7 +828,7 @@
 
     @media (min-width: 560px) {
       .app {
-        padding: 24px 24px var(--bottom-space);
+        padding: 20px 24px var(--bottom-space);
       }
     }
 
