@@ -569,6 +569,7 @@
     .emotion-card:focus-visible,
     .save-button:focus-visible,
     .summary-action:focus-visible,
+    .history-delete-button:focus-visible,
     .category-nav-button:focus-visible,
     .tab-button:focus-visible {
       outline: 3px solid rgba(32, 33, 36, 0.22);
@@ -627,6 +628,41 @@
     .history-item:first-child {
       border-color: rgba(232, 121, 0, 0.3);
       box-shadow: 0 12px 24px rgba(232, 121, 0, 0.11);
+    }
+
+    .history-item-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .history-item-head .record-date {
+      margin-bottom: 0;
+    }
+
+    .history-delete-button {
+      flex: 0 0 auto;
+      min-height: 28px;
+      padding: 6px 10px;
+      border: 1px solid rgba(224, 92, 92, 0.28);
+      border-radius: 999px;
+      background: #fff6f4;
+      color: #c54444;
+      font-size: 10px;
+      font-weight: 400;
+      line-height: 1;
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .history-delete-button:hover:not(:disabled) {
+      border-color: rgba(224, 92, 92, 0.45);
+      box-shadow: 0 4px 10px rgba(224, 92, 92, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .history-delete-button:disabled {
+      opacity: 0.55;
     }
 
     .history-chip-list {
@@ -1243,6 +1279,28 @@
       return normalizeRecords(Array.isArray(data) ? data : data.records);
     }
 
+    async function deleteRecord(date) {
+      if (USE_MOCK) {
+        const records = loadMockRecords().filter((item) => item.date !== date);
+        saveMockRecords(records);
+        return date;
+      }
+
+      const response = await fetch(getEndpoint("/record"), {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ date })
+      });
+
+      if (!response.ok) {
+        throw new Error("삭제 요청에 실패했어요.");
+      }
+
+      return date;
+    }
+
     function getLastRecord(records) {
       if (!records.length) return null;
       return records[records.length - 1];
@@ -1297,6 +1355,15 @@
       knownRecords = knownRecords.filter((item) => item.date !== record.date);
       knownRecords.push(record);
       lastSavedRecord = record;
+    }
+
+    function forgetRecord(date) {
+      knownRecords = knownRecords.filter((item) => item.date !== date);
+      lastSavedRecord = getLastRecord(knownRecords);
+
+      if (recordDate.value === date) {
+        clearSelection();
+      }
     }
 
     function renderLastRecord(record) {
@@ -1499,11 +1566,40 @@
 
         return `
           <article class="history-item" style="--accent: ${getRecordAccent(record)};">
-            <p class="record-date">${escapeHtml(formatDate(record.date))}</p>
+            <div class="history-item-head">
+              <p class="record-date">${escapeHtml(formatDate(record.date))}</p>
+              <button class="history-delete-button" type="button" data-date="${escapeHtml(record.date)}" aria-label="${escapeHtml(formatDate(record.date))} 기록 삭제">삭제</button>
+            </div>
             <div class="history-chip-list">${chips}</div>
           </article>
         `;
       }).join("");
+    }
+
+    async function handleHistoryDelete(button) {
+      const date = button.dataset.date;
+      if (!date) return;
+
+      if (!window.confirm(`${formatDate(date)} 기록을 삭제할까요?`)) {
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "삭제 중";
+
+      try {
+        await deleteRecord(date);
+        forgetRecord(date);
+        renderHistory(knownRecords);
+        renderLastRecord(lastSavedRecord);
+        updateSaveSelection();
+        showToast("기록을 삭제했어요.");
+      } catch (error) {
+        console.error(error);
+        button.disabled = false;
+        button.textContent = "삭제";
+        showToast("삭제하지 못했어요. 잠시 후 다시 시도해 주세요.");
+      }
     }
 
     async function refreshLastRecord() {
@@ -1601,6 +1697,12 @@
         enterEditor(lastSavedRecord);
       });
       saveButton.addEventListener("click", handlePrimaryAction);
+      historyList.addEventListener("click", (event) => {
+        const button = event.target.closest(".history-delete-button");
+        if (button) {
+          handleHistoryDelete(button);
+        }
+      });
       dateTrigger.addEventListener("click", () => {
         if (datePicker.hidden) {
           openDatePicker();
