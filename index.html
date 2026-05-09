@@ -14,16 +14,18 @@
     }
 
     :root {
-      --bg: #ffffff;
-      --ink: #202124;
-      --muted: #74777f;
-      --line: #eceef3;
-      --panel: #f7f8fb;
-      --paper: #fbfcff;
+      --bg: #fff8f0;
+      --ink: #2b2118;
+      --muted: #927862;
+      --line: #ffe5c0;
+      --panel: #fff1dc;
+      --paper: #fffefa;
       --cream: #fff8ee;
-      --active: #202124;
-      --shadow: 0 14px 30px rgba(28, 31, 38, 0.13);
-      --soft-shadow: 0 8px 20px rgba(28, 31, 38, 0.08);
+      --active: #e87900;
+      --shadow: 0 12px 24px rgba(119, 72, 20, 0.13);
+      --soft-shadow: 0 7px 16px rgba(119, 72, 20, 0.09);
+      --accent: #e87900;
+      --accent-soft: #fff0d8;
       --bottom-space: 132px;
     }
 
@@ -67,7 +69,7 @@
       min-height: 320px;
       margin: 0 auto;
       padding: 20px 16px;
-      background: var(--bg);
+      background: transparent;
     }
 
     .top {
@@ -75,7 +77,12 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--paper);
+      box-shadow: var(--soft-shadow);
     }
 
     .brand {
@@ -85,14 +92,14 @@
     .brand-title {
       margin: 0;
       color: var(--ink);
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 400;
       line-height: 1.18;
     }
 
     .brand-subtitle {
       margin: 4px 0 0;
-      color: var(--muted);
+      color: var(--active);
       font-size: 13px;
       font-weight: 400;
       line-height: 1.45;
@@ -122,19 +129,19 @@
       align-items: center;
       padding: 8px 36px 8px 10px;
       border: 1px solid var(--line);
-      border-radius: 10px;
+      border-radius: 999px;
       outline: none;
-      background: #ffffff;
+      background: var(--paper);
       color: var(--ink);
       font-size: 14px;
       font-weight: 400;
       text-align: left;
-      box-shadow: 0 2px 10px rgba(28, 31, 38, 0.04);
+      box-shadow: 0 2px 10px rgba(119, 72, 20, 0.05);
     }
 
     .date-input:focus {
-      border-color: #202124;
-      box-shadow: 0 0 0 3px rgba(32, 33, 36, 0.08);
+      border-color: var(--active);
+      box-shadow: 0 0 0 3px rgba(232, 121, 0, 0.13);
     }
 
     .date-input::after {
@@ -153,8 +160,8 @@
       padding: 12px;
       border: 1px solid var(--line);
       border-radius: 14px;
-      background: #ffffff;
-      box-shadow: 0 16px 34px rgba(28, 31, 38, 0.12);
+      background: var(--paper);
+      box-shadow: 0 16px 34px rgba(119, 72, 20, 0.16);
     }
 
     .date-picker[hidden] {
@@ -185,7 +192,7 @@
       width: 30px;
       height: 30px;
       border-radius: 999px;
-      background: #f5f6f9;
+      background: var(--accent-soft);
       color: var(--ink);
       font-size: 15px;
       font-weight: 400;
@@ -220,7 +227,7 @@
     }
 
     .date-picker-day.is-selected {
-      background: #202124;
+      background: var(--active);
       color: #ffffff;
     }
 
@@ -229,15 +236,15 @@
       grid-template-columns: 1fr 1fr;
       gap: 6px;
       padding: 5px;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
       border: 1px solid var(--line);
-      border-radius: 12px;
-      background: #f5f6f9;
+      border-radius: 16px;
+      background: #fff2df;
     }
 
     .tab-button {
       min-height: 42px;
-      border-radius: 9px;
+      border-radius: 12px;
       background: transparent;
       color: var(--muted);
       font-size: 14px;
@@ -246,8 +253,8 @@
     }
 
     .tab-button.is-active {
-      background: #ffffff;
-      color: var(--active);
+      background: var(--paper);
+      color: var(--ink);
       box-shadow: var(--soft-shadow);
     }
 
@@ -263,11 +270,11 @@
       position: relative;
       overflow: hidden;
       margin-bottom: 18px;
-      padding: 18px;
+      padding: 18px 18px 20px;
       border: 1px solid var(--line);
-      border-radius: 16px;
-      background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
-      box-shadow: 0 16px 34px rgba(28, 31, 38, 0.09);
+      border-radius: 18px;
+      background: var(--paper);
+      box-shadow: var(--soft-shadow);
     }
 
     .last-record::before {
@@ -282,7 +289,7 @@
 
     .last-record.is-empty {
       border-style: dashed;
-      background: #fbfcff;
+      background: var(--paper);
       box-shadow: none;
     }
 
@@ -292,13 +299,14 @@
 
     .today-editor {
       display: none;
-      grid-template-columns: 100px 1fr;
+      grid-template-columns: 58px 1fr;
       min-height: 320px;
       max-width: 700px;
       overflow: visible;
       border: 1px solid var(--line);
-      border-radius: 16px;
-      background: #ffffff;
+      border-radius: 18px;
+      background: var(--paper);
+      box-shadow: var(--soft-shadow);
     }
 
     #todayPanel.is-editing .today-summary {
@@ -319,37 +327,59 @@
     .category-sidebar {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      padding: 14px 10px 14px 0;
+      align-items: center;
+      gap: 7px;
+      padding: 14px 9px;
       border-right: 0.5px solid var(--line);
+      border-radius: 18px 0 0 18px;
+      background: #fff4e4;
     }
 
     .category-nav-button {
       display: flex;
       align-items: center;
-      gap: 6px;
-      width: 100%;
-      min-height: 34px;
-      padding: 6px 8px;
-      border-radius: 10px;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      min-height: 38px;
+      padding: 0;
+      border: 1.5px solid transparent;
+      border-radius: 999px;
       background: transparent;
       color: var(--muted);
-      font-size: 12px;
+      font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "Galmuri9", sans-serif;
+      font-size: 18px;
       font-weight: 400;
-      text-align: left;
+      line-height: 1;
+      text-align: center;
+      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
     }
 
     .category-nav-button.is-active {
-      background: var(--panel);
+      background: var(--paper);
+      border-color: var(--category-color, var(--active));
       color: var(--ink);
       font-weight: 500;
+      box-shadow: 0 3px 10px rgba(232, 121, 0, 0.16);
+      transform: scale(1.06);
+    }
+
+    .category-nav-button:hover {
+      transform: scale(1.05);
+    }
+
+    .category-nav-button.is-active:hover {
+      transform: scale(1.06);
     }
 
     .category-nav-dot {
-      width: 8px;
-      height: 8px;
-      flex: 0 0 auto;
-      border-radius: 999px;
+      display: none;
+    }
+
+    .category-nav-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .chip-pane {
@@ -357,7 +387,7 @@
       flex-direction: column;
       min-width: 0;
       min-height: 320px;
-      padding: 14px 0 0 16px;
+      padding: 16px 16px 0 18px;
     }
 
     .chip-pane-top {
@@ -365,7 +395,7 @@
       align-items: flex-start;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .chip-category-title {
@@ -384,7 +414,7 @@
       padding: 4px 9px;
       border-radius: 999px;
       background: var(--accent-soft, #f1f3f7);
-      color: #626671;
+      color: var(--muted);
       font-size: 11px;
       font-weight: 400;
       line-height: 1.35;
@@ -396,7 +426,7 @@
       min-height: 36px;
       margin: 0 0 4px;
       padding: 7px 11px;
-      border: 1px solid #ece6dc;
+      border: 1px solid var(--line);
       border-radius: 999px;
       background: var(--cream);
       color: var(--ink);
@@ -407,7 +437,7 @@
 
     .record-emotions {
       margin: 0;
-      color: #4d515b;
+      color: var(--muted);
       font-size: 14px;
       font-weight: 400;
       line-height: 1.6;
@@ -478,7 +508,7 @@
       position: relative;
       min-height: 30px;
       padding: 6px 14px;
-      border: 2px solid transparent;
+      border: 1.5px solid rgba(119, 72, 20, 0.08);
       border-radius: 999px;
       font-size: 13px;
       font-weight: 400;
@@ -487,7 +517,8 @@
       word-break: keep-all;
       box-shadow: none;
       transform: none;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      opacity: 0.78;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, background 0.15s ease, opacity 0.15s ease;
     }
 
     .emotion-card:active {
@@ -495,7 +526,9 @@
     }
 
     .emotion-card.is-selected {
-      transform: scale(1.06);
+      background: var(--paper) !important;
+      opacity: 1;
+      transform: scale(1.05);
     }
 
     .emotion-card.is-selected[style*="#b36200"] {
@@ -525,6 +558,8 @@
 
     .emotion-card:focus-visible,
     .save-button:focus-visible,
+    .summary-action:focus-visible,
+    .category-nav-button:focus-visible,
     .tab-button:focus-visible {
       outline: 3px solid rgba(32, 33, 36, 0.22);
       outline-offset: 3px;
@@ -533,8 +568,8 @@
     .history-list {
       display: grid;
       position: relative;
-      gap: 12px;
-      padding-left: 18px;
+      gap: 14px;
+      padding: 4px 0 4px 22px;
     }
 
     .history-list.is-plain {
@@ -544,12 +579,13 @@
     .history-list::before {
       content: "";
       position: absolute;
-      top: 10px;
-      bottom: 10px;
-      left: 5px;
-      width: 2px;
+      top: 20px;
+      bottom: 20px;
+      left: 8px;
+      width: 1px;
       border-radius: 999px;
-      background: #eceef3;
+      background-image: linear-gradient(to bottom, #e87900 45%, transparent 45%);
+      background-size: 1px 8px;
     }
 
     .history-list.is-plain::before {
@@ -558,29 +594,29 @@
 
     .history-item {
       position: relative;
-      padding: 15px 14px;
+      padding: 14px 14px 15px;
       border: 1px solid var(--line);
-      border-radius: 14px;
-      background: #ffffff;
-      box-shadow: 0 8px 18px rgba(28, 31, 38, 0.06);
+      border-radius: 16px;
+      background: var(--paper);
+      box-shadow: 0 8px 18px rgba(119, 72, 20, 0.07);
     }
 
     .history-item::before {
       content: "";
       position: absolute;
-      top: 22px;
-      left: -18px;
-      width: 11px;
-      height: 11px;
-      border: 3px solid #ffffff;
+      top: 23px;
+      left: -20px;
+      width: 9px;
+      height: 9px;
+      border: 3px solid var(--bg);
       border-radius: 999px;
       background: var(--accent, #202124);
-      box-shadow: 0 0 0 1px rgba(32, 33, 36, 0.12);
+      box-shadow: 0 0 0 1px rgba(232, 121, 0, 0.24);
     }
 
     .history-item:first-child {
-      border-color: rgba(32, 33, 36, 0.14);
-      box-shadow: 0 14px 26px rgba(28, 31, 38, 0.1);
+      border-color: rgba(232, 121, 0, 0.3);
+      box-shadow: 0 12px 24px rgba(232, 121, 0, 0.11);
     }
 
     .history-chip-list {
@@ -594,9 +630,9 @@
     .history-loading,
     .history-error {
       padding: 28px 14px;
-      border: 1px dashed #d9dce4;
-      border-radius: 12px;
-      background: #fbfcff;
+      border: 1px dashed var(--line);
+      border-radius: 16px;
+      background: var(--paper);
       color: var(--muted);
       font-size: 14px;
       font-weight: 400;
@@ -606,7 +642,7 @@
 
     .history-error {
       border-color: rgba(224, 92, 92, 0.35);
-      background: #fff8f8;
+      background: #fff6f4;
       color: #c54444;
     }
 
@@ -615,9 +651,8 @@
       bottom: 0;
       z-index: 10;
       margin-top: auto;
-      padding: 14px 0 14px;
-      border-top: 0.5px solid var(--line);
-      background: rgba(255, 255, 255, 0.96);
+      padding: 14px 0 16px;
+      background: linear-gradient(180deg, rgba(255, 254, 250, 0), var(--paper) 22%);
     }
 
     .save-bar.is-hidden {
@@ -631,12 +666,17 @@
       gap: 12px;
       width: 100%;
       margin: 0;
+      padding: 10px 10px 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff9ef;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
     }
 
     .save-selection {
       min-height: 20px;
       color: var(--ink);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 400;
       line-height: 1.45;
       text-align: left;
@@ -649,26 +689,26 @@
 
     .save-button {
       width: auto;
-      min-width: 150px;
-      min-height: 50px;
+      min-width: 118px;
+      min-height: 38px;
       margin-left: auto;
-      padding: 0 18px;
-      border-radius: 14px;
-      background: #202124;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: var(--active);
       color: #ffffff;
-      font-size: 16px;
+      font-size: 13px;
       font-weight: 400;
-      box-shadow: var(--shadow);
+      box-shadow: 0 8px 16px rgba(232, 121, 0, 0.18);
       transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
     }
 
     .save-button:not(:disabled):active {
       transform: translateY(1px);
-      box-shadow: 0 9px 20px rgba(28, 31, 38, 0.16);
+      box-shadow: 0 5px 12px rgba(232, 121, 0, 0.18);
     }
 
     .save-button:disabled {
-      background: #d5d8df;
+      background: #e2d3c2;
       color: #ffffff;
       box-shadow: none;
       opacity: 0.78;
@@ -697,7 +737,7 @@
       max-width: 420px;
       padding: 12px 15px;
       border-radius: 999px;
-      background: #202124;
+      background: var(--ink);
       color: #ffffff;
       font-size: 14px;
       font-weight: 400;
@@ -713,8 +753,8 @@
       min-height: 42px;
       margin-top: 12px;
       padding: 0 16px;
-      border-radius: 12px;
-      background: #202124;
+      border-radius: 999px;
+      background: var(--active);
       color: #ffffff;
       font-size: 14px;
       font-weight: 400;
@@ -753,11 +793,12 @@
       }
 
       .today-editor {
-        grid-template-columns: 92px 1fr;
+        grid-template-columns: 54px 1fr;
       }
 
       .chip-pane {
         padding-left: 12px;
+        padding-right: 12px;
       }
 
       .chip-pane-top {
@@ -1231,16 +1272,21 @@
         const button = document.createElement("button");
         const dot = document.createElement("span");
         const label = document.createElement("span");
+        const view = CATEGORY_VIEW[group.category] || {};
 
         button.className = "category-nav-button";
         button.type = "button";
         button.dataset.category = group.category;
         button.classList.toggle("is-active", group.category === activeCategory);
+        button.setAttribute("aria-label", group.category);
+        button.title = group.category;
+        button.style.setProperty("--category-color", group.color);
 
         dot.className = "category-nav-dot";
         dot.style.background = group.color;
 
-        label.textContent = getCategoryShortLabel(group.category);
+        label.className = "category-nav-label";
+        label.textContent = view.emoji || getCategoryShortLabel(group.category);
 
         button.addEventListener("click", () => {
           activeCategory = group.category;
@@ -1323,7 +1369,7 @@
         return;
       }
 
-      saveSelection.textContent = emotions.map((emotion) => getEmotionChipLabel(emotion, true)).join(" · ");
+      saveSelection.textContent = `선택됨: ${emotions.map((emotion) => getEmotionChipLabel(emotion, true)).join(" · ")}`;
       saveSelection.classList.remove("is-empty");
     }
 
