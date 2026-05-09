@@ -65,7 +65,7 @@
     }
 
     .app {
-      width: min(100%, 700px);
+      width: min(100%, 920px);
       min-height: 320px;
       margin: 0 auto;
       padding: 20px 16px;
@@ -78,7 +78,7 @@
       justify-content: space-between;
       gap: 12px;
       margin-bottom: 14px;
-      padding: 16px 18px;
+      padding: 18px 20px;
       border: 1px solid var(--line);
       border-radius: 18px;
       background: var(--paper);
@@ -299,9 +299,9 @@
 
     .today-editor {
       display: none;
-      grid-template-columns: 58px 1fr;
-      min-height: 320px;
-      max-width: 700px;
+      grid-template-columns: 64px minmax(0, 1fr);
+      min-height: 340px;
+      max-width: 920px;
       overflow: visible;
       border: 1px solid var(--line);
       border-radius: 18px;
@@ -319,7 +319,7 @@
     }
 
     .editor-date {
-      width: min(100%, 190px);
+      width: min(100%, 210px);
       min-width: 0;
       margin: 0;
     }
@@ -329,7 +329,7 @@
       flex-direction: column;
       align-items: center;
       gap: 7px;
-      padding: 14px 9px;
+      padding: 16px 11px;
       border-right: 0.5px solid var(--line);
       border-radius: 18px 0 0 18px;
       background: #fff4e4;
@@ -339,9 +339,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 38px;
-      height: 38px;
-      min-height: 38px;
+      width: 40px;
+      height: 40px;
+      min-height: 40px;
       padding: 0;
       border: 1.5px solid transparent;
       border-radius: 999px;
@@ -386,16 +386,16 @@
       display: flex;
       flex-direction: column;
       min-width: 0;
-      min-height: 320px;
-      padding: 16px 16px 0 18px;
+      min-height: 340px;
+      padding: 18px 18px 0 20px;
     }
 
     .chip-pane-top {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 16px;
+      gap: 16px;
+      margin-bottom: 18px;
     }
 
     .chip-category-title {
@@ -500,7 +500,7 @@
       flex-wrap: wrap;
       gap: 12px 10px;
       align-content: flex-start;
-      min-height: 120px;
+      min-height: 150px;
       padding-right: 2px;
     }
 
@@ -712,6 +712,59 @@
       color: #ffffff;
       box-shadow: none;
       opacity: 0.78;
+    }
+
+    @media (min-width: 760px) {
+      .chip-pane {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 236px;
+        grid-template-rows: auto minmax(190px, 1fr);
+        column-gap: 18px;
+        row-gap: 0;
+      }
+
+      .chip-pane-top {
+        grid-column: 1 / -1;
+      }
+
+      .card-grid {
+        grid-column: 1;
+        grid-row: 2;
+        min-height: 220px;
+        padding: 2px 0 22px;
+      }
+
+      .save-bar {
+        position: sticky;
+        top: 16px;
+        bottom: auto;
+        grid-column: 2;
+        grid-row: 2;
+        align-self: start;
+        margin-top: 0;
+        padding: 0 0 18px;
+        background: transparent;
+      }
+
+      .save-bar-inner {
+        align-items: stretch;
+        flex-direction: column;
+        min-height: 188px;
+        padding: 14px;
+      }
+
+      .save-selection {
+        min-height: 84px;
+        padding-bottom: 10px;
+        border-bottom: 1px dashed var(--line);
+      }
+
+      .save-button {
+        width: 100%;
+        min-width: 0;
+        margin-left: 0;
+        margin-top: auto;
+      }
     }
 
     .toast {
