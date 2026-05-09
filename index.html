@@ -26,6 +26,7 @@
       --soft-shadow: 0 7px 16px rgba(119, 72, 20, 0.09);
       --accent: #e87900;
       --accent-soft: #fff0d8;
+      --side-panel-width: 236px;
       --bottom-space: 132px;
     }
 
@@ -319,7 +320,7 @@
     }
 
     .editor-date {
-      width: min(100%, 210px);
+      width: min(100%, var(--side-panel-width));
       min-width: 0;
       margin: 0;
     }
@@ -717,7 +718,7 @@
     @media (min-width: 760px) {
       .chip-pane {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) 236px;
+        grid-template-columns: minmax(0, 1fr) var(--side-panel-width);
         grid-template-rows: auto minmax(190px, 1fr);
         column-gap: 18px;
         row-gap: 0;
