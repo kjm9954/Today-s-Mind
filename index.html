@@ -63,10 +63,10 @@
     }
 
     .app {
-      width: min(100%, 760px);
-      min-height: 100vh;
+      width: min(100%, 700px);
+      min-height: 320px;
       margin: 0 auto;
-      padding: 20px 16px var(--bottom-space);
+      padding: 20px 16px;
       background: var(--bg);
     }
 
@@ -261,7 +261,7 @@
 
     .last-record {
       position: relative;
-      overflow: hidden;
+      overflow: visible;
       margin-bottom: 18px;
       padding: 18px;
       border: 1px solid var(--line);
@@ -292,6 +292,13 @@
 
     .today-editor {
       display: none;
+      grid-template-columns: 100px 1fr;
+      min-height: 320px;
+      max-width: 700px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #ffffff;
     }
 
     #todayPanel.is-editing .today-summary {
@@ -299,14 +306,74 @@
     }
 
     #todayPanel.is-editing .today-editor {
-      display: block;
+      display: grid;
       animation: riseIn 220ms ease both;
     }
 
     .editor-date {
-      width: min(100%, 230px);
+      width: min(100%, 190px);
       min-width: 0;
+      margin: 0;
+    }
+
+    .category-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 14px 10px 14px 0;
+      border-right: 0.5px solid var(--line);
+    }
+
+    .category-nav-button {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+      min-height: 34px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 400;
+      text-align: left;
+    }
+
+    .category-nav-button.is-active {
+      background: var(--panel);
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .category-nav-dot {
+      width: 8px;
+      height: 8px;
+      flex: 0 0 auto;
+      border-radius: 999px;
+    }
+
+    .chip-pane {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 320px;
+      padding: 14px 0 0 16px;
+    }
+
+    .chip-pane-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
       margin-bottom: 18px;
+    }
+
+    .chip-category-title {
+      margin: 0;
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.35;
     }
 
     .record-kicker {
@@ -402,6 +469,9 @@
       display: flex;
       flex-wrap: wrap;
       gap: 12px 10px;
+      align-content: flex-start;
+      min-height: 120px;
+      padding-right: 2px;
     }
 
     .emotion-card {
@@ -541,15 +611,13 @@
     }
 
     .save-bar {
-      position: fixed;
-      right: 0;
+      position: sticky;
       bottom: 0;
-      left: 0;
-      z-index: 30;
-      padding: 12px 16px max(12px, env(safe-area-inset-bottom));
-      border-top: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(14px);
+      z-index: 10;
+      margin-top: auto;
+      padding: 14px 0 14px;
+      border-top: 0.5px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
     }
 
     .save-bar.is-hidden {
@@ -557,10 +625,12 @@
     }
 
     .save-bar-inner {
-      display: grid;
-      gap: 8px;
-      width: min(100%, 760px);
-      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      margin: 0;
     }
 
     .save-selection {
@@ -569,7 +639,7 @@
       font-size: 13px;
       font-weight: 400;
       line-height: 1.45;
-      text-align: center;
+      text-align: left;
       word-break: keep-all;
     }
 
@@ -578,8 +648,11 @@
     }
 
     .save-button {
-      width: 100%;
+      width: auto;
+      min-width: 150px;
       min-height: 50px;
+      margin-left: auto;
+      padding: 0 18px;
       border-radius: 14px;
       background: #202124;
       color: #ffffff;
@@ -633,6 +706,20 @@
       box-shadow: var(--shadow);
     }
 
+    .summary-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      margin-top: 12px;
+      padding: 0 16px;
+      border-radius: 12px;
+      background: #202124;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
     @keyframes riseIn {
       from {
         opacity: 0;
@@ -664,6 +751,27 @@
       .date-input {
         min-height: 44px;
       }
+
+      .today-editor {
+        grid-template-columns: 92px 1fr;
+      }
+
+      .chip-pane {
+        padding-left: 12px;
+      }
+
+      .chip-pane-top {
+        flex-direction: column;
+      }
+
+      .save-bar-inner {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .save-button {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -684,34 +792,47 @@
     <section class="panel is-active" id="todayPanel" aria-label="오늘의 감정">
       <section class="today-summary" id="todaySummary">
         <article class="last-record" id="lastRecord" aria-live="polite"></article>
+        <button class="summary-action" id="summaryAction" type="button">감정 기록하기</button>
       </section>
 
       <section class="today-editor" id="todayEditor" aria-label="감정 기록하기">
-        <div class="date-control editor-date">
-          <label for="recordDate">기록 날짜</label>
-          <button class="date-input" id="dateTrigger" type="button" aria-haspopup="dialog" aria-expanded="false">2026-05-10</button>
-          <input id="recordDate" type="hidden" value="">
-          <div class="date-picker" id="datePicker" hidden>
-            <div class="date-picker-head">
-              <div class="date-picker-title" id="datePickerTitle"></div>
-              <div class="date-picker-nav">
-                <button class="date-picker-button" id="prevMonthButton" type="button" aria-label="이전 달">‹</button>
-                <button class="date-picker-button" id="nextMonthButton" type="button" aria-label="다음 달">›</button>
+        <aside class="category-sidebar" id="categorySidebar" aria-label="감정 카테고리"></aside>
+        <section class="chip-pane">
+          <div class="chip-pane-top">
+            <h2 class="chip-category-title" id="activeCategoryTitle"></h2>
+            <div class="date-control editor-date">
+              <label for="recordDate">기록 날짜</label>
+              <button class="date-input" id="dateTrigger" type="button" aria-haspopup="dialog" aria-expanded="false">2026-05-10</button>
+              <input id="recordDate" type="hidden" value="">
+              <div class="date-picker" id="datePicker" hidden>
+                <div class="date-picker-head">
+                  <div class="date-picker-title" id="datePickerTitle"></div>
+                  <div class="date-picker-nav">
+                    <button class="date-picker-button" id="prevMonthButton" type="button" aria-label="이전 달">‹</button>
+                    <button class="date-picker-button" id="nextMonthButton" type="button" aria-label="다음 달">›</button>
+                  </div>
+                </div>
+                <div class="date-picker-weekdays" aria-hidden="true">
+                  <span>일</span>
+                  <span>월</span>
+                  <span>화</span>
+                  <span>수</span>
+                  <span>목</span>
+                  <span>금</span>
+                  <span>토</span>
+                </div>
+                <div class="date-picker-days" id="datePickerDays"></div>
               </div>
             </div>
-            <div class="date-picker-weekdays" aria-hidden="true">
-              <span>일</span>
-              <span>월</span>
-              <span>화</span>
-              <span>수</span>
-              <span>목</span>
-              <span>금</span>
-              <span>토</span>
-            </div>
-            <div class="date-picker-days" id="datePickerDays"></div>
           </div>
-        </div>
-        <div id="cardRoot"></div>
+          <div class="card-grid" id="cardRoot"></div>
+          <div class="save-bar" id="saveBar">
+            <div class="save-bar-inner">
+              <div class="save-selection is-empty" id="saveSelection" aria-live="polite">감정을 선택해주세요</div>
+              <button class="save-button" id="saveButton" type="button">오늘의 감정 저장하기</button>
+            </div>
+          </div>
+        </section>
       </section>
     </section>
 
@@ -719,13 +840,6 @@
       <div class="history-list" id="historyList"></div>
     </section>
   </main>
-
-  <div class="save-bar" id="saveBar">
-    <div class="save-bar-inner">
-      <div class="save-selection is-empty" id="saveSelection" aria-live="polite">감정을 선택해주세요</div>
-      <button class="save-button" id="saveButton" type="button">감정 기록하기</button>
-    </div>
-  </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite">
     <div class="toast-content" id="toastContent"></div>
@@ -771,26 +885,31 @@
     const CATEGORY_VIEW = {
       "좋은 감정": {
         emoji: "🌟",
+        short: "좋은",
         background: "#fff3e0",
         color: "#b36200"
       },
       "슬픈 감정": {
         emoji: "🌧️",
+        short: "슬픈",
         background: "#e8f0fb",
         color: "#1a4a8a"
       },
       "화나는 감정": {
         emoji: "🔥",
+        short: "화나는",
         background: "#fdecea",
         color: "#8b1a1a"
       },
       "불안한 감정": {
-        emoji: "☁️",
+        emoji: "🫧",
+        short: "불안한",
         background: "#f0eafb",
         color: "#4a2a8a"
       },
       "지친 감정": {
         emoji: "🌫️",
+        short: "지친",
         background: "#f1f1f1",
         color: "#555555"
       }
@@ -799,6 +918,7 @@
     const STORAGE_KEY = "todaysMind.records";
     const emotionLookup = new Map();
     const selectedEmotions = new Set();
+    let activeCategory = CARDS[0].category;
 
     CARDS.forEach((group) => {
       const view = CATEGORY_VIEW[group.category] || {
@@ -819,6 +939,9 @@
     });
 
     const cardRoot = document.getElementById("cardRoot");
+    const categorySidebar = document.getElementById("categorySidebar");
+    const activeCategoryTitle = document.getElementById("activeCategoryTitle");
+    const summaryAction = document.getElementById("summaryAction");
     const saveButton = document.getElementById("saveButton");
     const saveBar = document.getElementById("saveBar");
     const saveSelection = document.getElementById("saveSelection");
@@ -1051,6 +1174,11 @@
       return view ? `${view.emoji} ${category}` : category;
     }
 
+    function getCategoryShortLabel(category) {
+      const view = CATEGORY_VIEW[category];
+      return view ? view.short : category;
+    }
+
     function getEmotionChipLabel(emotion, withEmoji = false) {
       const meta = emotionLookup.get(emotion);
       return withEmoji && meta && meta.emoji ? `${meta.emoji} ${emotion}` : emotion;
@@ -1092,41 +1220,66 @@
     }
 
     function renderCards() {
+      renderCategorySidebar();
+      renderActiveCategory();
+    }
+
+    function renderCategorySidebar() {
       const fragment = document.createDocumentFragment();
 
       CARDS.forEach((group) => {
-        const section = document.createElement("section");
-        section.className = "category";
+        const button = document.createElement("button");
+        const dot = document.createElement("span");
+        const label = document.createElement("span");
 
-        const head = document.createElement("div");
-        head.className = "category-head";
+        button.className = "category-nav-button";
+        button.type = "button";
+        button.dataset.category = group.category;
+        button.classList.toggle("is-active", group.category === activeCategory);
 
-        const title = document.createElement("h2");
-        title.className = "category-title";
-        title.textContent = getCategoryLabel(group.category);
+        dot.className = "category-nav-dot";
+        dot.style.background = group.color;
 
-        const grid = document.createElement("div");
-        grid.className = "card-grid";
+        label.textContent = getCategoryShortLabel(group.category);
 
-        group.emotions.forEach((emotion) => {
-          const card = document.createElement("button");
-          card.className = "emotion-card";
-          card.type = "button";
-          card.textContent = emotion;
-          card.dataset.emotion = emotion;
-          card.setAttribute("style", getEmotionStyle(emotion));
-          card.setAttribute("aria-pressed", "false");
-
-          card.addEventListener("click", () => {
-            toggleEmotion(card, emotion);
-          });
-
-          grid.appendChild(card);
+        button.addEventListener("click", () => {
+          activeCategory = group.category;
+          renderCategorySidebar();
+          renderActiveCategory();
         });
 
-        head.append(title);
-        section.append(head, grid);
-        fragment.appendChild(section);
+        button.append(dot, label);
+        fragment.appendChild(button);
+      });
+
+      categorySidebar.innerHTML = "";
+      categorySidebar.appendChild(fragment);
+    }
+
+    function renderActiveCategory() {
+      const group = CARDS.find((item) => item.category === activeCategory) || CARDS[0];
+      const fragment = document.createDocumentFragment();
+
+      activeCategoryTitle.textContent = getCategoryLabel(group.category);
+      cardRoot.innerHTML = "";
+
+      group.emotions.forEach((emotion) => {
+        const card = document.createElement("button");
+        const isSelected = selectedEmotions.has(emotion);
+
+        card.className = "emotion-card";
+        card.type = "button";
+        card.textContent = emotion;
+        card.dataset.emotion = emotion;
+        card.setAttribute("style", getEmotionStyle(emotion));
+        card.classList.toggle("is-selected", isSelected);
+        card.setAttribute("aria-pressed", String(isSelected));
+
+        card.addEventListener("click", () => {
+          toggleEmotion(card, emotion);
+        });
+
+        fragment.appendChild(card);
       });
 
       cardRoot.appendChild(fragment);
@@ -1170,7 +1323,7 @@
         return;
       }
 
-      saveSelection.textContent = `✅ ${emotions.join(" · ")}`;
+      saveSelection.textContent = emotions.map((emotion) => getEmotionChipLabel(emotion, true)).join(" · ");
       saveSelection.classList.remove("is-empty");
     }
 
@@ -1335,6 +1488,9 @@
         });
       });
 
+      summaryAction.addEventListener("click", () => {
+        enterEditor(lastSavedRecord);
+      });
       saveButton.addEventListener("click", handlePrimaryAction);
       dateTrigger.addEventListener("click", () => {
         if (datePicker.hidden) {
